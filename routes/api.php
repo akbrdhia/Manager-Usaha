@@ -9,5 +9,12 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/allbarang', [BarangController::class, 'index']);
+Route::get('/barang', [BarangController::class, 'index']);
+Route::get('/barang/{kode_barang}', [BarangController::class, 'show']);
+
+Route::post('/barang', [BarangController::class, 'store']);
+Route::post('/minstobasestock', [BarangController::class, 'mstobasestock']);
+Route::post('/plustobasestock', [BarangController::class, 'plustobasestock']);
+
 
 

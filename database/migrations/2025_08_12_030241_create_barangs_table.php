@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('kategori');
             $table->integer('stok');
-            $table->double('harga', 15,2);  // precision 15, scale 2
+            $table->double('harga', 15,2);  
             $table->double('modal', 15, 2);
             $table->string('barcode')->nullable();
             $table->string('gambar_path')->nullable();
