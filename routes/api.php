@@ -26,6 +26,11 @@ Route::patch('/barang/{id}', [BarangController::class, 'update']);
 // delete
 Route::delete('/barang/{id}', [BarangController::class, 'destroy']);
 
+// Search dan Filter Barang
+Route::get('/barang/search', [BarangController::class, 'search']);
+Route::get('/barang/kategori', [BarangController::class, 'getKategori']);
+Route::get('/barang/kategori/{kategori}', [BarangController::class, 'getBarangByKategori']);
+
 // Routes untuk Riwayat
 Route::get('/riwayat', [RiwayatController::class, 'index']);
 Route::get('/riwayat/{id}', [RiwayatController::class, 'show']);
@@ -34,6 +39,10 @@ Route::get('/riwayat/barang/{barangId}', [RiwayatController::class, 'getRiwayatB
 Route::get('/riwayat/tipe/{tipe}', [RiwayatController::class, 'getRiwayatByTipe']);
 Route::get('/riwayat/stok', [RiwayatController::class, 'getRiwayatStok']);
 Route::get('/riwayat/summary', [RiwayatController::class, 'getSummary']);
+
+// Search dan Filter Riwayat
+Route::get('/riwayat/search', [RiwayatController::class, 'search']);
+Route::get('/riwayat/period', [RiwayatController::class, 'getRiwayatByPeriod']);
 
 
 

@@ -19,6 +19,159 @@ class BarangController extends Controller
         return response()->json($barang);
     }
 
+    /**
+     * Search barang berdasarkan keyword
+     */
+    public function search(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'keyword' => 'required|string|min:2',
+            'kategori' => 'nullable|string',
+            'min_stok' => 'nullable|numeric|min:0',
+            'max_stok' => 'nullable|numeric|min:0',
+            'min_harga' => 'nullable|numeric|min:0',
+            'max_harga' => 'nullable|numeric|min:0',
+            'per_page' => 'nullable|integer|min:1|max:100'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $query = barang::query();
+
+            // Search berdasarkan keyword (nama, barcode, kategori)
+            $keyword = $request->keyword;
+            $query->where(function($q) use ($keyword) {
+                $q->where('nama', 'LIKE', "%{$keyword}%")
+                  ->orWhere('barcode', 'LIKE', "%{$keyword}%")
+                  ->orWhere('kategori', 'LIKE', "%{$keyword}%");
+            });
+
+            // Filter berdasarkan kategori
+            if ($request->has('kategori') && $request->kategori) {
+                $query->where('kategori', $request->kategori);
+            }
+
+            // Filter berdasarkan range stok
+            if ($request->has('min_stok') && $request->min_stok !== null) {
+                $query->where('stok', '>=', $request->min_stok);
+            }
+            if ($request->has('max_stok') && $request->max_stok !== null) {
+                $query->where('stok', '<=', $request->max_stok);
+            }
+
+            // Filter berdasarkan range harga
+            if ($request->has('min_harga') && $request->min_harga !== null) {
+                $query->where('harga', '>=', $request->min_harga);
+            }
+            if ($request->has('max_harga') && $request->max_harga !== null) {
+                $query->where('harga', '<=', $request->max_harga);
+            }
+
+            // Pagination
+            $perPage = $request->get('per_page', 15);
+            $barang = $query->orderBy('nama', 'asc')->paginate($perPage);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Pencarian berhasil',
+                'data' => $barang,
+                'filters' => [
+                    'keyword' => $keyword,
+                    'kategori' => $request->kategori,
+                    'min_stok' => $request->min_stok,
+                    'max_stok' => $request->max_stok,
+                    'min_harga' => $request->min_harga,
+                    'max_harga' => $request->max_harga
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat melakukan pencarian',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get semua kategori barang
+     */
+    public function getKategori()
+    {
+        try {
+            $kategori = barang::select('kategori')
+                ->distinct()
+                ->whereNotNull('kategori')
+                ->where('kategori', '!=', '')
+                ->orderBy('kategori', 'asc')
+                ->pluck('kategori');
+
+            return response()->json([
+                'success' => true,
+                'data' => $kategori
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat mengambil kategori',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get barang berdasarkan kategori
+     */
+    public function getBarangByKategori(string $kategori, Request $request)
+    {
+        try {
+            $query = barang::where('kategori', $kategori);
+
+            // Filter berdasarkan range stok
+            if ($request->has('min_stok') && $request->min_stok !== null) {
+                $query->where('stok', '>=', $request->min_stok);
+            }
+            if ($request->has('max_stok') && $request->max_stok !== null) {
+                $query->where('stok', '<=', $request->max_stok);
+            }
+
+            // Filter berdasarkan range harga
+            if ($request->has('min_harga') && $request->min_harga !== null) {
+                $query->where('harga', '>=', $request->min_harga);
+            }
+            if ($request->has('max_harga') && $request->max_harga !== null) {
+                $query->where('harga', '<=', $request->max_harga);
+            }
+
+            // Pagination
+            $perPage = $request->get('per_page', 15);
+            $barang = $query->orderBy('nama', 'asc')->paginate($perPage);
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'kategori' => $kategori,
+                    'barang' => $barang
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat mengambil barang berdasarkan kategori',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function plustobasestock(Request $request)
     {
         $validator = Validator::make($request->all(), [
