@@ -63,7 +63,7 @@
   <img src="https://www.vectorlogo.zone/logos/kotlinlang/kotlinlang-icon.svg" alt="Kotlin" width="60" height="60"/>
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/android/android-original.svg" alt="Android" width="60" height="60"/>
   <img src="https://www.vectorlogo.zone/logos/nodejs/nodejs-icon.svg" alt="Backend API" width="60" height="60"/>
-  <img src="https://developer.android.com/static/images/brand/Android_Robot.png" alt="Material Design" width="60" height="60"/>
+  <img src="https://raw.githubusercontent.com/Templarian/MaterialDesign/master/svg/material-design.svg" alt="Material Design" width="60" height="60"/>
 </div>
 
 ### Core Technologies
