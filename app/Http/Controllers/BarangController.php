@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\barang;
+use App\Services\RiwayatService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
@@ -33,8 +34,13 @@ class BarangController extends Controller
         }
         try {
             $barang = barang::findOrFail($request->id);
+            $stokLama = $barang->stok;
             $barang->stok += $request->stok;
             $barang->save();
+
+            // Catat riwayat penambahan stok
+            RiwayatService::catatTambahStok($barang->id, $request->stok);
+
             return response()->json(['message' => 'Stok barang berhasil ditambahkan'], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -133,6 +139,9 @@ class BarangController extends Controller
 
             $barang->save();
 
+            // Catat riwayat pengurangan stok
+            RiwayatService::catatKurangiStok($barang->id, $request->stok);
+
             Log::info('Stok barang berhasil diupdate', [
                 'barang_id' => $barang->id,
                 'kode_barang' => $barang->barcode,
@@ -200,6 +209,9 @@ class BarangController extends Controller
         try {
             $barang = barang::create($validatedData);
 
+            // Catat riwayat pembuatan barang
+            RiwayatService::catatCreateBarang($barang->id);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Barang berhasil disimpan',
@@ -263,9 +275,14 @@ class BarangController extends Controller
 
         try {
             $barang = barang::findOrFail($id);
+            $dataLama = $barang->toArray();
+            
             $barang->update($request->only([
                 'nama', 'kategori', 'stok', 'harga', 'modal', 'barcode', 'gambar_path'
             ]));
+
+            // Catat riwayat update barang
+            RiwayatService::catatUpdateBarang($barang->id);
 
             return response()->json([
                 'success' => true,
@@ -288,6 +305,10 @@ class BarangController extends Controller
     {
         try {
             $barang = barang::findOrFail($id);
+            
+            // Catat riwayat penghapusan barang sebelum dihapus
+            RiwayatService::catatDeleteBarang($barang->id);
+            
             $barang->delete();
 
             return response()->json([
