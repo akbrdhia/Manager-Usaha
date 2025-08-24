@@ -44,6 +44,7 @@ class BarangController extends Controller
             ], 500);
         }
     }
+    
     public function checkstok($kode_barang)
     {
         $barang = barang::where('barcode', $kode_barang)->first();
@@ -132,7 +133,6 @@ class BarangController extends Controller
 
             $barang->save();
 
-            // Log perubahan stok (opsional - bisa dibuat tabel terpisah)
             Log::info('Stok barang berhasil diupdate', [
                 'barang_id' => $barang->id,
                 'kode_barang' => $barang->barcode,
@@ -175,7 +175,11 @@ class BarangController extends Controller
      */
     public function create()
     {
-
+        // Method ini biasanya digunakan untuk form HTML, 
+        // tapi karena ini API, kita bisa skip atau return view
+        return response()->json([
+            'message' => 'Gunakan POST /barang untuk membuat barang baru'
+        ], 405);
     }
 
     /**
@@ -186,7 +190,7 @@ class BarangController extends Controller
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
             'kategori' => 'required|string|max:100',
-            'stok' => 'required|integer|min:0',
+            'stok' => 'required|numeric|min:0',
             'harga' => 'required|numeric|min:0',
             'modal' => 'required|numeric|min:0',
             'barcode' => 'nullable|string|max:100|unique:barangs,barcode',
@@ -194,7 +198,7 @@ class BarangController extends Controller
         ]);
 
         try {
-            $barang = Barang::create($validatedData);
+            $barang = barang::create($validatedData);
 
             return response()->json([
                 'success' => true,
@@ -209,7 +213,6 @@ class BarangController extends Controller
             ], 500);
         }
     }
-
 
     /**
      * Display the specified resource.
@@ -228,7 +231,11 @@ class BarangController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Method ini biasanya digunakan untuk form HTML edit, 
+        // tapi karena ini API, kita bisa skip atau return view
+        return response()->json([
+            'message' => 'Gunakan PUT /barang/{id} untuk update barang'
+        ], 405);
     }
 
     /**
@@ -236,7 +243,42 @@ class BarangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nama' => 'sometimes|required|string|max:255',
+            'kategori' => 'sometimes|required|string|max:100',
+            'stok' => 'sometimes|required|numeric|min:0',
+            'harga' => 'sometimes|required|numeric|min:0',
+            'modal' => 'sometimes|required|numeric|min:0',
+            'barcode' => 'sometimes|nullable|string|max:100|unique:barangs,barcode,' . $id,
+            'gambar_path' => 'sometimes|nullable|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $barang = barang::findOrFail($id);
+            $barang->update($request->only([
+                'nama', 'kategori', 'stok', 'harga', 'modal', 'barcode', 'gambar_path'
+            ]));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Barang berhasil diupdate',
+                'data' => $barang
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat mengupdate barang',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -244,6 +286,20 @@ class BarangController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $barang = barang::findOrFail($id);
+            $barang->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Barang berhasil dihapus'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menghapus barang',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
