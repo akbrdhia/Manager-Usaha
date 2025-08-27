@@ -10,6 +10,17 @@
         android:title="Barang"
         android:icon="@drawable/ic_box"
         android:iconTint="@color/black"/>
-        />
+    <item
+        android:id="@id/riwayatFragment"
+        android:title="Riwayat"
+        android:icon="@drawable/ic_history"
+        android:iconTint="@color/black"/>
+    <item
+        android:id="@+id/laporanFragment"
+        android:title="Laporan"
+        android:icon="@drawable/ic_report"
+        android:iconTint="@color/black"/>
+
+
 
 </menu>

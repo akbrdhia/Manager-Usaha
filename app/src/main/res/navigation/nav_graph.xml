@@ -15,4 +15,14 @@
         android:name="com.application.managerusahav2.ui.fragment.barang.BarangFragment"
         android:label="fragment_barang"
         tools:layout="@layout/fragment_barang" />
+    <fragment
+        android:id="@+id/laporanFragment"
+        android:name="com.application.managerusahav2.ui.fragment.laporan.LaporanFragment"
+        android:label="fragment_laporan"
+        tools:layout="@layout/fragment_laporan" />
+    <fragment
+        android:id="@+id/riwayatFragment"
+        android:name="com.application.managerusahav2.ui.fragment.riwayat.RiwayatFragment"
+        android:label="fragment_riwayat"
+        tools:layout="@layout/fragment_riwayat" />
 </navigation>
