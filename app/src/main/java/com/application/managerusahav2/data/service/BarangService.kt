@@ -5,7 +5,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 interface BarangService {
-    @GET("/barang")
+    @GET("allbarang")
     suspend fun getAllBarang(): Response<List<Barang>>
 
 }

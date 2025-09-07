@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:paddingHorizontal="24dp"
+        android:paddingBottom="24dp">
+
+        <!-- Header dengan tombol kembali -->
+        <LinearLayout
+            android:id="@+id/header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
+                android:text="Tambah Barang"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/judul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:text="Barang"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header_layout" />
+
+        <!-- Nama Barang -->
+        <TextView
+            android:id="@+id/label_nama_barang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="Nama Barang"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_nama_barang"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edittext"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_nama_barang">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_nama_barang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:inputType="text"
+                android:hint="cth : air mineral"
+                android:paddingVertical="12dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Kuantitas -->
+        <TextView
+            android:id="@+id/label_kuantitas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="Kuantitas"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_layout_nama_barang" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_kuantitas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edittext"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_kuantitas">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_kuantitas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:inputType="number"
+                android:hint="52"
+                android:paddingVertical="12dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Row untuk Kategori dan Barcode -->
+        <LinearLayout
+            android:id="@+id/row_kategori_barcode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_layout_kuantitas">
+
+            <!-- Kategori Section -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="Kategori"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@drawable/bg_edittext">
+
+                    <Spinner
+                        android:id="@+id/kategori_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="12dp"
+                        android:popupBackground="@color/white" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <!-- Add Button -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="  "
+                    android:textSize="14sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_add_kategori"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:insetTop="0dp"
+                    android:layout_marginTop="8dp"
+                    android:insetBottom="0dp"
+                    app:backgroundTint="@color/white"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_plus"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="28dp"
+                    app:iconTint="@color/black"
+                    app:rippleColor="@color/ripple_grey"
+                    app:strokeColor="@color/dark_variant" />
+
+            </LinearLayout>
+
+            <!-- Barcode Section -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="Barcode Barang"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_layout_barcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edittext"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/black"
+                    app:boxStrokeWidth="1dp"
+                    app:endIconDrawable="@drawable/ic_scan"
+                    app:endIconMode="custom"
+                    app:endIconTint="@color/black"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_barcode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:hint="barcode barang"
+                        android:inputType="text"
+                        android:paddingStart="12dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="12dp"
+                        android:paddingBottom="16dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Harga -->
+        <TextView
+            android:id="@+id/label_harga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="Harga Modal"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/row_kategori_barcode" />
+
+        <TextView
+            android:id="@+id/label_harga_jual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="Harga Jual"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/label_harga"
+            app:layout_constraintTop_toBottomOf="@+id/row_kategori_barcode" />
+        <LinearLayout
+            android:id="@+id/row_harga"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_harga">
+
+            <!-- Harga Modal -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_harga_modal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edittext"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeColor="@color/black"
+                app:boxStrokeWidth="1dp"
+                app:hintEnabled="false"
+                app:prefixText="Rp ">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_harga_modal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint=" "
+                    android:inputType="numberDecimal"
+                    android:paddingVertical="12dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Harga Jual -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_harga_jual"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edittext"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeColor="@color/black"
+                app:boxStrokeWidth="1dp"
+                app:hintEnabled="false"
+                app:prefixText="Rp ">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_harga_jual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint=" "
+                    android:inputType="numberDecimal"
+                    android:paddingVertical="12dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="12dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+
+        <!-- Gambar Barang -->
+        <TextView
+            android:id="@+id/label_gambar_barang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12sp"
+            android:fontFamily="@font/inter_medium"
+            android:text="Gambar Barang"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/row_harga" />
+
+        <!-- Photo placeholders -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/photo_card_1"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="@color/grey"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_gambar_barang"
+            app:rippleColor="@color/ripple_grey">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:alpha="0.5"
+                android:src="@drawable/ic_placeholder_image"
+                app:tint="@color/grey_icon" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <!-- Tombol Batal dan Tambah -->
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/photo_card_1">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_batal"
+                android:layout_width="0dp"
+                android:layout_height="58dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="Batal"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:backgroundTint="@color/white"
+                app:cornerRadius="12dp"
+                app:rippleColor="@color/ripple_grey"
+                app:strokeColor="@color/primary"
+                app:strokeWidth="1dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_tambah"
+                android:layout_width="0dp"
+                android:layout_height="58dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="Tambah"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:backgroundTint="@color/primary_variant"
+                app:cornerRadius="12dp"
+                app:rippleColor="@color/ripple_grey" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

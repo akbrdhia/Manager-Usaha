@@ -8,7 +8,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="grey">#FFD4CBCB</color>
 
     <!-- App Brand Colors -->
     <color name="primary">#19456B</color>
@@ -36,6 +35,8 @@
     <color name="background_dark">#121212</color>
     <color name="surface_light">#F9FAFB</color>
     <color name="surface_dark">#1F2937</color>
+    <color name="ripple_grey">#33000000</color> <!-- hitam 20% transparan -->
+
 
     <!-- Bottom Navigation Specific -->
     <color name="bnv_icon_active">#19456B</color> <!-- pakai primary -->
@@ -44,6 +45,16 @@
     <color name="bnv_text_inactive">#FF9E9E9E</color>
     <color name="bnv_circle_active">#3319456B</color> <!-- transparan 20% -->
     <color name="bnv_ripple">#3319456B</color>
+
+    <!-- Search Field Colors -->
+    <color name="grey">#E0E0E0</color>                    <!-- Border color -->
+    <color name="grey_icon">#9E9E9E</color>               <!-- Search icon color -->
+    <color name="grey_hint">#BDBDBD</color>
+
+    <color name="blue">#2196F3</color>
+    <color name="light_blue">#E3F2FD</color>
+    <color name="green">#4CAF50</color>
+    <color name="red">#F44336</color>
 
     <!-- Transparent -->
     <color name="transparent">#00000000</color>

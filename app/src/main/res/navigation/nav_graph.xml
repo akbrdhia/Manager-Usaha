@@ -14,7 +14,16 @@
         android:id="@+id/barangFragment"
         android:name="com.application.managerusahav2.ui.fragment.barang.BarangFragment"
         android:label="fragment_barang"
-        tools:layout="@layout/fragment_barang" />
+        tools:layout="@layout/fragment_barang" >
+        <action
+            android:id="@+id/action_barangFragment_to_tambahBarangFragment"
+            app:destination="@id/tambahBarangFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/barangFragment" />
+    </fragment>
     <fragment
         android:id="@+id/laporanFragment"
         android:name="com.application.managerusahav2.ui.fragment.laporan.LaporanFragment"
@@ -25,4 +34,9 @@
         android:name="com.application.managerusahav2.ui.fragment.riwayat.RiwayatFragment"
         android:label="fragment_riwayat"
         tools:layout="@layout/fragment_riwayat" />
+    <fragment
+        android:id="@+id/tambahBarangFragment"
+        android:name="com.application.managerusahav2.ui.fragment.tambah_barang.TambahBarangFragment"
+        android:label="fragment_tambah_barang"
+        tools:layout="@layout/fragment_tambah_barang" />
 </navigation>

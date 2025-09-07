@@ -40,7 +40,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bg_board"
-            android:padding="16dp">
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="20dp">
 
             <TextView
                 android:id="@+id/textView"
@@ -80,6 +81,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
                     android:text="0"
                     android:textColor="#43C237" />
             </LinearLayout>
@@ -102,6 +104,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
                     android:text="0"
                     android:textColor="#F80404" />
             </LinearLayout>
@@ -123,6 +126,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
                     android:text="0"
                     android:textColor="@color/black"/>
             </LinearLayout>
@@ -142,6 +146,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
                     android:text="0"
                     android:textColor="@color/black" />
             </LinearLayout>
@@ -155,7 +160,7 @@
                 android:textSize="14sp"
                 app:icon="@drawable/ic_barchart"
                 app:iconTint="@color/white"
-                android:paddingHorizontal="80dp"
+                android:paddingHorizontal="65dp"
                 app:backgroundTint="@color/dark_variant"
                 app:cornerRadius="4dp"
                 app:elevation="4dp"
