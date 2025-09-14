@@ -218,7 +218,7 @@ class BarangController extends Controller
         // Validasi input
         $validator = Validator::make($request->all(), [
             'kode_barang' => 'required|string|max:255',
-            'stok' => 'required|numeric|min:0.01',
+            'stok' => 'required|numeric|min:1',
             'keterangan' => 'nullable|string|max:500',
             'user_id' => 'nullable|exists:users,id'
         ], [

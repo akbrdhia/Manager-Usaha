@@ -5,13 +5,10 @@ use App\Http\Controllers\RiwayatController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
 //get
 Route::get('/allbarang', [BarangController::class, 'index']);
 Route::get('/barang', [BarangController::class, 'index']);
+Route::get('/', [BarangController::class, 'index']);
 Route::get('/barang/{kode_barang}', [BarangController::class, 'show']);
 
 // post
@@ -27,8 +24,8 @@ Route::patch('/barang/{id}', [BarangController::class, 'update']);
 Route::delete('/barang/{id}', [BarangController::class, 'destroy']);
 
 // Search dan Filter Barang
-Route::get('/barang/search', [BarangController::class, 'search']);
-Route::get('/barang/kategori', [BarangController::class, 'getKategori']);
+Route::get('/search', [BarangController::class, 'search']);
+Route::get('/kategori', [BarangController::class, 'getKategori']);
 Route::get('/barang/kategori/{kategori}', [BarangController::class, 'getBarangByKategori']);
 
 // Routes untuk Riwayat
