@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.application.managerusahav2.R
+import com.application.managerusahav2.helper.StatusBarHelper
 
 class HomeFragment : Fragment() {
 
@@ -17,5 +18,10 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.fragment_home, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        StatusBarHelper.setStatusBar(requireActivity(), isLight = false)
     }
 }

@@ -40,7 +40,11 @@ class ExpandableBarangAdapter(
     fun submitList(barangList: List<Barang>) {
         originalBarangList = barangList
         val groupedBarang = barangList.groupBy { it.kategori }
+
         items.clear()
+
+        // ❌ Jangan tambahin expandedCategories.addAll(groupedBarang.keys) disini
+        // biarin expandedCategories dipelihara sama toggleCategory()
 
         groupedBarang.forEach { (kategori, barangInCategory) ->
             val isExpanded = expandedCategories.contains(kategori)
@@ -54,6 +58,13 @@ class ExpandableBarangAdapter(
         }
         notifyDataSetChanged()
     }
+
+    fun expandAllInitially(barangList: List<Barang>) {
+        expandedCategories.clear()
+        expandedCategories.addAll(barangList.map { it.kategori })
+        submitList(barangList)
+    }
+
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {

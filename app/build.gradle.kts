@@ -54,10 +54,27 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    // cropper
+    implementation("com.github.CanHub:Android-Image-Cropper:4.3.2")
+
     // Retrofit
     implementation(libs.squareup.retrofit)
     // Gson Converter (for JSON parsing)
     implementation(libs.converter.gson)
     // glide
     implementation(libs.glide)
+
+    //* scanner
+    // CameraX dependencies
+    implementation("androidx.camera:camera-core:1.3.1")
+    implementation("androidx.camera:camera-camera2:1.3.1")
+    implementation("androidx.camera:camera-lifecycle:1.3.1")
+    implementation("androidx.camera:camera-video:1.3.1")
+    implementation("androidx.camera:camera-view:1.3.1")
+    implementation("androidx.camera:camera-extensions:1.3.1")
+
+    // ML Kit Barcode Scanning
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+
+
 }

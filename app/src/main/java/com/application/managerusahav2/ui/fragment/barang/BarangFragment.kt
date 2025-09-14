@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.AdapterView
 import android.widget.ProgressBar
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@ import com.google.android.material.textfield.TextInputEditText
 import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import com.application.managerusahav2.data.RetrofitClient
+import com.application.managerusahav2.helper.StatusBarHelper
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 
@@ -54,7 +56,7 @@ class BarangFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        StatusBarHelper.setStatusBar(requireActivity(), isLight = true)
         initializeViewModel()
         initViews(view)
         setupRecyclerView()
@@ -236,7 +238,7 @@ class BarangFragment : Fragment() {
                             updateKategoriSpinner(state.barangList)
 
                             // Apply filters
-                            applyFilters()
+                            adapter.expandAllInitially(originalBarangList)
                         }
                     }
                 }
