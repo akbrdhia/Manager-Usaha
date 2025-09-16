@@ -55,7 +55,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     // cropper
-    implementation("com.github.CanHub:Android-Image-Cropper:4.3.2")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
 
     // Retrofit
     implementation(libs.squareup.retrofit)

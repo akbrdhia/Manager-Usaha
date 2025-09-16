@@ -10,28 +10,25 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.AdapterView
 import android.widget.ProgressBar
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.application.managerusahav2.R
 import com.application.managerusahav2.data.model.response.Barang
 import com.application.managerusahav2.data.repository.BarangRepository
-import com.application.managerusahav2.data.service.BarangService
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
-import com.application.managerusahav2.data.RetrofitClient
+import com.application.managerusahav2.data.network.RetrofitClient
 import com.application.managerusahav2.helper.StatusBarHelper
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
 
 class BarangFragment : Fragment() {
 
     private val viewModel: BarangViewModel by viewModels {
         BarangViewModelFactory(
-            BarangRepository(RetrofitClient.instance)
+            BarangRepository(RetrofitClient.getInstance())
         )
     }
     private lateinit var adapter: ExpandableBarangAdapter
