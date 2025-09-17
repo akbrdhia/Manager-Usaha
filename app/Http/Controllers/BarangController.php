@@ -201,167 +201,179 @@ class BarangController extends Controller
             ], 500);
         }
     }
-
+    
     public function plustobasestock(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:barangs,id',
-            'stok' => 'required|numeric|min:0.01',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validasi gagal',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-        try {
-            $barang = barang::findOrFail($request->id);
-            $stokLama = $barang->stok;
-            $barang->stok += $request->stok;
-            $barang->save();
-
-            // Catat riwayat penambahan stok
-            RiwayatService::catatTambahStok($barang->id, $request->stok);
-
-            return response()->json(['message' => 'Stok barang berhasil ditambahkan'], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan saat menambahkan stok barang',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function checkstok($kode_barang)
-    {
-        $barang = barang::where('barcode', $kode_barang)->first();
-        if (!$barang) {
-            return response()->json(['message' => 'Barang tidak ditemukan'], 404);
-        }
-        return response()->json($barang->stok);
-    }
-
-    public function mstobasestock(Request $request)
-    {
-        // Validasi input
-        $validator = Validator::make($request->all(), [
-            'kode_barang' => 'required|string|max:255',
-            'stok' => 'required|numeric|min:1',
+            'stok' => 'required|integer|min:1',
             'keterangan' => 'nullable|string|max:500',
             'user_id' => 'nullable|exists:users,id'
-        ], [
-            'kode_barang.required' => 'Kode barang harus diisi',
-            'kode_barang.string' => 'Kode barang harus berupa teks',
-            'stok.required' => 'Jumlah stok harus diisi',
-            'stok.numeric' => 'Jumlah stok harus berupa angka',
-            'stok.min' => 'Jumlah stok minimal 0.01',
-            'keterangan.string' => 'Keterangan harus berupa teks',
-            'keterangan.max' => 'Keterangan maksimal 500 karakter',
-            'user_id.exists' => 'User ID tidak valid'
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Validasi gagal',
-                'errors' => $validator->errors()
+                'data' => ['errors' => $validator->errors()]
             ], 422);
         }
 
         try {
-            // Cari barang berdasarkan barcode
-            $barang = barang::where('barcode', $request->kode_barang)->first();
+            $barang = Barang::findOrFail($request->id);
+            $stokLama = (int) $barang->stok;
+            $tambah = (int) $request->stok;
+            $barang->stok = $stokLama + $tambah;
 
-            if (!$barang) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Barang tidak ditemukan',
-                    'data' => ['kode_barang' => $request->kode_barang]
-                ], 404);
-            }
-
-            // Cek apakah barang aktif
-            if (isset($barang->status) && $barang->status !== 'active') {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Barang tidak aktif atau sudah dihapus',
-                    'data' => ['kode_barang' => $request->kode_barang]
-                ], 400);
-            }
-
-            $stokLama = $barang->stok;
-            $stokBaru = $stokLama - $request->stok;
-
-            // Validasi stok cukup
-            if ($stokBaru < 0) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Stok tidak cukup',
-                    'data' => [
-                        'stok_tersedia' => $stokLama,
-                        'stok_diminta' => $request->stok,
-                        'kekurangan' => abs($stokBaru)
-                    ]
-                ], 400);
-            }
-
-            // Update stok barang
-            $barang->stok = $stokBaru;
-            $barang->updated_at = now();
-
-            // Tambahkan field tambahan jika ada
-            if ($request->has('keterangan')) {
+            if ($request->filled('keterangan')) {
                 $barang->keterangan = $request->keterangan;
             }
-
-            if ($request->has('user_id')) {
+            if ($request->filled('user_id')) {
                 $barang->last_updated_by = $request->user_id;
             }
 
             $barang->save();
 
-            // Catat riwayat pengurangan stok
-            RiwayatService::catatKurangiStok($barang->id, $request->stok);
+            // Catat riwayat; sesuaikan signature RiwayatService bila perlu
+            RiwayatService::catatTambahStok($barang->id, $tambah, $request->user_id ?? null);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Stok barang berhasil ditambahkan',
+                'data' => [
+                    'barang_id' => $barang->id,
+                    'stok_lama' => $stokLama,
+                    'stok_baru' => $barang->stok,
+                    'penambahan' => $tambah
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error plustobasestock: '.$e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menambahkan stok barang',
+                'data' => ['error' => config('app.debug') ? $e->getMessage() : 'Internal server error']
+            ], 500);
+        }
+    }
+
+    // Check stok by barcode (tetap), tapi format response diseragamkan
+    public function checkstok($kode_barang)
+    {
+        $barang = Barang::where('barcode', $kode_barang)->first();
+        if (!$barang) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Barang tidak ditemukan',
+                'data' => ['kode_barang' => $kode_barang]
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Stok ditemukan',
+            'data' => [
+                'barang_id' => $barang->id,
+                'stok' => (int) $barang->stok
+            ]
+        ], 200);
+    }
+
+    // Sekarang mstobasestock menerima 'id' (divalidasi) dan mengurangi stok
+    public function mstobasestock(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|exists:barangs,id',
+            'stok' => 'required|integer|min:1',
+            'keterangan' => 'nullable|string|max:500',
+            'user_id' => 'nullable|exists:users,id'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'data' => ['errors' => $validator->errors()]
+            ], 422);
+        }
+
+        try {
+            $barang = Barang::findOrFail($request->id);
+
+            // cek status aktif jika ada kolom status
+            if (isset($barang->status) && $barang->status !== 'active') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Barang tidak aktif atau sudah dihapus',
+                    'data' => ['barang_id' => $barang->id]
+                ], 400);
+            }
+
+            $stokLama = (int) $barang->stok;
+            $kurangi = (int) $request->stok;
+            $stokBaru = $stokLama - $kurangi;
+
+            if ($stokBaru < 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Stok tidak cukup',
+                    'data' => [
+                        'barang_id' => $barang->id,
+                        'stok_tersedia' => $stokLama,
+                        'stok_diminta' => $kurangi,
+                        'kekurangan' => abs($stokBaru)
+                    ]
+                ], 400);
+            }
+
+            $barang->stok = $stokBaru;
+            $barang->updated_at = now();
+
+            if ($request->filled('keterangan')) {
+                $barang->keterangan = $request->keterangan;
+            }
+            if ($request->filled('user_id')) {
+                $barang->last_updated_by = $request->user_id;
+            }
+
+            $barang->save();
+
+            // Catat riwayat pengurangan stok; sesuaikan signature RiwayatService bila perlu
+            RiwayatService::catatKurangiStok($barang->id, $kurangi, $request->user_id ?? null);
 
             Log::info('Stok barang berhasil diupdate', [
                 'barang_id' => $barang->id,
-                'kode_barang' => $barang->barcode,
                 'stok_lama' => $stokLama,
                 'stok_baru' => $stokBaru,
-                'pengurangan' => $request->stok,
+                'pengurangan' => $kurangi,
                 'user_id' => $request->user_id ?? 'system',
                 'timestamp' => now()
             ]);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Stok barang berhasil diupdate',
+                'message' => 'Stok barang berhasil dikurangi',
                 'data' => [
                     'barang' => $barang,
                     'stok_lama' => $stokLama,
                     'stok_baru' => $stokBaru,
-                    'pengurangan' => $request->stok
+                    'pengurangan' => $kurangi
                 ]
             ], 200);
-
         } catch (\Exception $e) {
-            Log::error('Error saat update stok barang: ' . $e->getMessage(), [
-                'kode_barang' => $request->kode_barang,
-                'stok' => $request->stok,
-                'error' => $e->getMessage(),
+            Log::error('Error mstobasestock: '.$e->getMessage(), [
+                'id' => $request->id ?? null,
+                'stok' => $request->stok ?? null,
                 'trace' => $e->getTraceAsString()
             ]);
 
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan sistem',
-                'error' => config('app.debug') ? $e->getMessage() : 'Internal server error'
+                'message' => 'Terjadi kesalahan saat mengurangi stok barang',
+                'data' => ['error' => config('app.debug') ? $e->getMessage() : 'Internal server error']
             ], 500);
         }
     }
-
     /**
      * Show the form for creating a new resource.
      */
