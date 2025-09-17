@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('nama');
             $table->string('kategori');
             $table->integer('stok');
-            $table->double('harga', 15,2);  
-            $table->double('modal', 15, 2);
+            $table->bigInteger('harga');  
+            $table->bigInteger('modal');
             $table->string('barcode')->nullable();
             $table->string('gambar_path')->nullable();
             $table->timestamps();

@@ -13,8 +13,8 @@ Route::get('/barang/{kode_barang}', [BarangController::class, 'show']);
 
 // post
 Route::post('/barang', [BarangController::class, 'store']);
-Route::post('/minstobasestock', [BarangController::class, 'mstobasestock']);
-Route::post('/plustobasestock', [BarangController::class, 'plustobasestock']);
+Route::post('/kurangistok', [BarangController::class, 'mstobasestock']);
+Route::post('/tambahstok', [BarangController::class, 'plustobasestock']);
 
 // put/patch untuk update
 Route::put('/barang/{id}', [BarangController::class, 'update']);

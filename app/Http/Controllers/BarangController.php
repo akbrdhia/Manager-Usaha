@@ -47,10 +47,10 @@ class BarangController extends Controller
 
             // Search berdasarkan keyword (nama, barcode, kategori)
             $keyword = $request->keyword;
-            $query->where(function($q) use ($keyword) {
+            $query->where(function ($q) use ($keyword) {
                 $q->where('nama', 'LIKE', "%{$keyword}%")
-                  ->orWhere('barcode', 'LIKE', "%{$keyword}%")
-                  ->orWhere('kategori', 'LIKE', "%{$keyword}%");
+                    ->orWhere('barcode', 'LIKE', "%{$keyword}%")
+                    ->orWhere('kategori', 'LIKE', "%{$keyword}%");
             });
 
             // Filter berdasarkan kategori
@@ -172,6 +172,36 @@ class BarangController extends Controller
         }
     }
 
+    public function storeKategori(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'kategori' => 'required|string|max:100',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+        try {
+            $kategori = barang::create([
+                'kategori' => $request->kategori
+            ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Kategori berhasil disimpan',
+                'data' => $kategori
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menyimpan kategori',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function plustobasestock(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -203,7 +233,7 @@ class BarangController extends Controller
             ], 500);
         }
     }
-    
+
     public function checkstok($kode_barang)
     {
         $barang = barang::where('barcode', $kode_barang)->first();
@@ -243,7 +273,7 @@ class BarangController extends Controller
         try {
             // Cari barang berdasarkan barcode
             $barang = barang::where('barcode', $request->kode_barang)->first();
-            
+
             if (!$barang) {
                 return response()->json([
                     'success' => false,
@@ -280,12 +310,12 @@ class BarangController extends Controller
             // Update stok barang
             $barang->stok = $stokBaru;
             $barang->updated_at = now();
-            
+
             // Tambahkan field tambahan jika ada
             if ($request->has('keterangan')) {
                 $barang->keterangan = $request->keterangan;
             }
-            
+
             if ($request->has('user_id')) {
                 $barang->last_updated_by = $request->user_id;
             }
@@ -429,9 +459,15 @@ class BarangController extends Controller
         try {
             $barang = barang::findOrFail($id);
             $dataLama = $barang->toArray();
-            
+
             $barang->update($request->only([
-                'nama', 'kategori', 'stok', 'harga', 'modal', 'barcode', 'gambar_path'
+                'nama',
+                'kategori',
+                'stok',
+                'harga',
+                'modal',
+                'barcode',
+                'gambar_path'
             ]));
 
             // Catat riwayat update barang
@@ -458,10 +494,10 @@ class BarangController extends Controller
     {
         try {
             $barang = barang::findOrFail($id);
-            
+
             // Catat riwayat penghapusan barang sebelum dihapus
             RiwayatService::catatDeleteBarang($barang->id);
-            
+
             $barang->delete();
 
             return response()->json([
