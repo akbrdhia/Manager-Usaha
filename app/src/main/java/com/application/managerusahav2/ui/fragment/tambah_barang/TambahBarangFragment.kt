@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -82,6 +83,11 @@ class TambahBarangFragment : Fragment() {
 
         val factory = TambahBarangViewModelFactory(barangRepository)
         viewModel = ViewModelProvider(this, factory)[TambahBarangViewModel::class.java]
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            if (findNavController().previousBackStackEntry != null) {
+                findNavController().popBackStack()
+            }
+        }
 
         setupKategoriSpinner()
         setupListeners()
@@ -111,6 +117,8 @@ class TambahBarangFragment : Fragment() {
 
         // Inisialisasi loading dan error views
         kategoriProgressBar = view.findViewById(R.id.kategori_progress_bar)
+
+
     }
 
     private fun setupKategoriSpinner() {
@@ -411,7 +419,6 @@ class TambahBarangFragment : Fragment() {
 
     private fun clearForm() {
         viewModel.clearAll()
-        Toast.makeText(requireContext(), "Form dibersihkan", Toast.LENGTH_SHORT).show()
     }
 
     private fun submitForm() {
