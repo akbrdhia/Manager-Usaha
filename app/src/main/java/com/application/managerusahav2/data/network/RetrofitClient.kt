@@ -52,6 +52,13 @@ object RetrofitClient {
 
         // OkHttp client dengan timeout configuration
         val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val newRequest = chain.request().newBuilder()
+                    .addHeader("Accept", "application/json")
+                    .addHeader("Content-Type", "application/json") // opsional
+                    .build()
+                chain.proceed(newRequest)
+            }
             .addInterceptor(loggingInterceptor)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)

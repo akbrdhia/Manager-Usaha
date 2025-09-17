@@ -103,7 +103,7 @@
                 android:paddingEnd="12dp"
                 android:singleLine="true"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -152,7 +152,7 @@
                 android:paddingEnd="12dp"
                 android:singleLine="true"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -167,7 +167,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_kuantitas">
 
-            <!-- Kategori Section -->
+            <!-- Kategori Section - FIXED -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -184,21 +184,35 @@
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
+                <!-- Container untuk loading/error/normal state (overlay -> cuma 1 area) -->
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
-                    android:background="@drawable/bg_edittext">
+                    android:background="@drawable/bg_edittext"
+                    android:padding="4dp">
 
+                    <!-- Loading Progress (tengah) -->
+                    <ProgressBar
+                        android:id="@+id/kategori_progress_bar"
+                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:contentDescription="Loading kategori" />
+
+                    <!-- Normal Spinner (default visible ketika load selesai) -->
                     <Spinner
                         android:id="@+id/kategori_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginHorizontal="12dp"
+
                         android:popupBackground="@color/white" />
 
                 </FrameLayout>
 
             </LinearLayout>
+
 
             <!-- Add Button -->
             <LinearLayout
