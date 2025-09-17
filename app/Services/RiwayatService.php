@@ -35,7 +35,7 @@ class RiwayatService
      */
     public static function catatTambahStok($barangId, $jumlah, $tanggal = null)
     {
-        return self::catatAktivitas($barangId, 'tambah_stok', $jumlah, $tanggal);
+        return self::catatAktivitas($barangId, 'plus', $jumlah, $tanggal);
     }
 
     /**
@@ -43,7 +43,7 @@ class RiwayatService
      */
     public static function catatKurangiStok($barangId, $jumlah, $tanggal = null)
     {
-        return self::catatAktivitas($barangId, 'kurangi_stok', $jumlah, $tanggal);
+        return self::catatAktivitas($barangId, 'min', $jumlah, $tanggal);
     }
 
     /**
