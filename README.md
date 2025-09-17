@@ -22,8 +22,8 @@
 ### Stock Management
 | Method | Endpoint | Controller | Description |
 |--------|----------|------------|-------------|
-| POST | `/api/plustobasestock` | BarangController@plustobasestock | Add stock |
-| POST | `/api/minstobasestock` | BarangController@mstobasestock | Reduce stock |
+| POST | `/api/tambahstok` | BarangController@plustobasestock | Add stock |
+| POST | `/api/kurangistok` | BarangController@mstobasestock | Reduce stock |
 
 ---
 
