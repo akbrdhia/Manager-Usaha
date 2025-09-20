@@ -36,6 +36,8 @@
     <color name="surface_light">#F9FAFB</color>
     <color name="surface_dark">#1F2937</color>
     <color name="ripple_grey">#33000000</color> <!-- hitam 20% transparan -->
+    <color name="grey_light">#F5F5F5</color>
+    <color name="grey_divider">#E0E0E0</color>
 
 
     <!-- Bottom Navigation Specific -->

@@ -4,15 +4,15 @@ import com.application.managerusahav2.data.model.request.TambahBarangRequest
 import com.application.managerusahav2.data.model.response.Barang
 import com.application.managerusahav2.data.model.response.KategoriResponse
 import com.application.managerusahav2.data.model.response.TambahBarangResponse
-import com.application.managerusahav2.data.service.BarangService
+import com.application.managerusahav2.data.service.ApiService
 import com.application.managerusahav2.helper.RepositoryException
 import retrofit2.Response
 
-class BarangRepository(private val barangService: BarangService) {
+class BarangRepository(private val apiService: ApiService) {
 
     suspend fun GetAllBarang(): Response<List<Barang>> {
         return try {
-            val resp = barangService.getAllBarang()
+            val resp = apiService.getAllBarang()
             android.util.Log.d("Repo", "Response code: ${resp.code()}")
             if (!resp.isSuccessful) {
                 android.util.Log.e("Repo", "Error body: ${resp.errorBody()?.string()}")
@@ -26,7 +26,7 @@ class BarangRepository(private val barangService: BarangService) {
 
     suspend fun GetAllKategori(): Response<KategoriResponse> {
         return try {
-            val resp = barangService.getAllKategori()
+            val resp = apiService.getAllKategori()
             android.util.Log.d("Repo", "Kategori response code: ${resp.code()}")
             if (!resp.isSuccessful) {
                 android.util.Log.e("Repo", "Kategori error body: ${resp.errorBody()?.string()}")
@@ -40,7 +40,7 @@ class BarangRepository(private val barangService: BarangService) {
 
     suspend fun TambahBarang(request: TambahBarangRequest): Response<TambahBarangResponse> {
         return try {
-            val resp = barangService.tambahBarang(request)
+            val resp = apiService.tambahBarang(request)
             android.util.Log.d("Repo", "Tambah barang response code: ${resp.code()}")
             if (!resp.isSuccessful) {
                 android.util.Log.e("Repo", "Tambah barang error body: ${resp.errorBody()?.string()}")

@@ -5,7 +5,6 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.barang.BarangFragment"
     android:paddingHorizontal="24dp">
 
     <TextView
@@ -46,7 +45,7 @@
             android:id="@+id/search_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Cari sesuatu..."
+            android:hint="Cari riwayat..."
             android:textColorHint="@color/grey_hint"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -85,7 +84,6 @@
                 android:id="@+id/kategori_dropdown_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 app:endIconTint="@color/grey_icon">
 
                 <Spinner
@@ -109,12 +107,11 @@
                 android:id="@+id/filter_dropdown_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 app:endIconTint="@color/grey_icon"
                 app:hintEnabled="false">
 
                 <Spinner
-                    android:id="@+id/stok_spinner"
+                    android:id="@+id/filter_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:popupBackground="@color/white"/>
@@ -125,19 +122,27 @@
 
     </LinearLayout>
 
-    <!-- RecyclerView for Barang List -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_barang"
+    <!-- SwipeRefreshLayout wrapping RecyclerView -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:clipToPadding="false"
-        android:paddingBottom="16dp"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/item_category" />
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- RecyclerView for Riwayat List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_barang"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp"
+            tools:listitem="@layout/item_riwayat" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <!-- Loading Indicator -->
     <ProgressBar
@@ -145,8 +150,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@+id/rv_barang"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_barang"
+        app:layout_constraintTop_toTopOf="@+id/swipe_refresh"
+        app:layout_constraintBottom_toBottomOf="@+id/swipe_refresh"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -158,25 +163,36 @@
         android:orientation="vertical"
         android:gravity="center"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@+id/rv_barang"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_barang"
+        app:layout_constraintTop_toTopOf="@+id/swipe_refresh"
+        app:layout_constraintBottom_toBottomOf="@+id/swipe_refresh"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_history"
+            android:layout_marginBottom="16dp"
+            app:tint="@color/grey_icon" />
+
         <TextView
+            android:id="@+id/tv_empty_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tidak ada barang"
+            android:text="Belum ada riwayat"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:layout_marginBottom="8dp"/>
 
         <TextView
+            android:id="@+id/tv_empty_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tambahkan barang pertama Anda"
-            android:textColor="@color/black"
-            android:textSize="14sp"/>
+            android:text="Aktivitas akan muncul di sini"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:textAlignment="center"/>
 
     </LinearLayout>
 

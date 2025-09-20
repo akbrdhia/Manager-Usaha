@@ -1,6 +1,6 @@
 package com.application.managerusahav2.data.network
 
-import com.application.managerusahav2.data.service.BarangService
+import com.application.managerusahav2.data.service.ApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -14,7 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 object RetrofitClient {
 
     @Volatile
-    private var INSTANCE: BarangService? = null
+    private var INSTANCE: ApiService? = null
 
     /**
      * Mendapatkan instance BarangService
@@ -23,7 +23,7 @@ object RetrofitClient {
 
     // tambahan di RetrofitClient (opsional, biar compatible)
 
-    fun getInstance(): BarangService {
+    fun getInstance(): ApiService {
         return INSTANCE ?: synchronized(this) {
             val instance = buildRetrofitInstance()
             INSTANCE = instance
@@ -44,7 +44,7 @@ object RetrofitClient {
     /**
      * Membangun instance Retrofit dengan konfigurasi lengkap
      */
-    private fun buildRetrofitInstance(): BarangService {
+    private fun buildRetrofitInstance(): ApiService {
         // Logging interceptor untuk debugging (opsional)
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
@@ -72,6 +72,6 @@ object RetrofitClient {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        return retrofit.create(BarangService::class.java)
+        return retrofit.create(ApiService::class.java)
     }
 }
