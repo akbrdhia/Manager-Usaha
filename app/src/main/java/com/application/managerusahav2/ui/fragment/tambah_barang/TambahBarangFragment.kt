@@ -1,15 +1,26 @@
 package com.application.managerusahav2.ui.fragment.tambah_barang
 
+import android.app.AlertDialog
+import android.content.ContentValues
+import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -62,10 +73,16 @@ class TambahBarangFragment : Fragment() {
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         if (uri != null) {
-            viewModel.setImageUri(uri.toString())
-            showImagePreview(uri)
+            val savedUri = saveImageToMediaStore(uri)
+            if (savedUri != null) {
+                viewModel.setImageUri(savedUri.toString())
+                showImagePreview(savedUri)
+            } else {
+                Toast.makeText(requireContext(), "Gagal menyimpan gambar", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -362,25 +379,64 @@ class TambahBarangFragment : Fragment() {
     }
 
     private fun showAddKategoriDialog() {
-        val edit = EditText(requireContext()).apply {
-            hint = "Nama kategori"
+        val dialogView = layoutInflater.inflate(R.layout.dialog_tambah_kategori, null)
+        val etKategori = dialogView.findViewById<TextInputEditText>(R.id.et_kategori_name)
+        val btnBatal = dialogView.findViewById<MaterialButton>(R.id.btn_batal_dialog)
+        val btnTambah = dialogView.findViewById<MaterialButton>(R.id.btn_tambah_dialog)
+
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.show()
+
+        // Fokus & buka keyboard
+        etKategori.requestFocus()
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(etKategori, InputMethodManager.SHOW_IMPLICIT)
+
+        // Listener tombol
+        btnBatal.setOnClickListener {
+            imm.hideSoftInputFromWindow(etKategori.windowToken, 0)
+            dialog.dismiss()
         }
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Tambah Kategori")
-            .setView(edit)
-            .setPositiveButton("Tambah") { dialog, _ ->
-                val text = edit.text.toString().trim()
-                if (text.isNotEmpty()) {
-                    viewModel.addKategori(text)
-                    Toast.makeText(requireContext(), "Kategori '$text' ditambahkan (akan disimpan saat submit)", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(requireContext(), "Nama kategori kosong", Toast.LENGTH_SHORT).show()
-                }
-                dialog.dismiss()
+
+        btnTambah.setOnClickListener {
+            val text = etKategori.text?.toString()?.trim().orEmpty()
+            if (text.isEmpty()) {
+                etKategori.error = "Nama kategori kosong"
+                etKategori.requestFocus()
+                return@setOnClickListener
             }
-            .setNegativeButton("Batal") { d, _ -> d.dismiss() }
-            .show()
+
+            // Tambah kategori ke viewmodel (sesuai implementasimu)
+            viewModel.addKategori(text)
+
+            imm.hideSoftInputFromWindow(etKategori.windowToken, 0)
+            dialog.dismiss()
+        }
     }
+
+    private fun saveImageToMediaStore(sourceUri: Uri): Uri? {
+        val resolver = requireContext().contentResolver
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, "barang_${System.currentTimeMillis()}.jpg")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/MyApp")
+        }
+
+        val destUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+        if (destUri != null) {
+            resolver.openOutputStream(destUri).use { output ->
+                resolver.openInputStream(sourceUri).use { input ->
+                    input?.copyTo(output!!)
+                }
+            }
+        }
+        return destUri
+    }
+
 
     private fun showImagePreview(uri: Uri) {
         photoCard.removeAllViews()

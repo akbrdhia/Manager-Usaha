@@ -1,5 +1,6 @@
 package com.application.managerusahav2.ui.fragment.barang
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -100,13 +101,14 @@ class ExpandableBarangAdapter(
             tvHarga.text = currencyFormat.format(barang.harga)
 
             if (!barang.gambarPath.isNullOrEmpty()) {
-                // Jangan override ukuran kecuali perlu. Glide otomatis handle cache.
+                Log.d("GlideTest", "Gambar path: ${barang.gambarPath}")
                 Glide.with(itemView.context)
                     .load(barang.gambarPath)
                     .placeholder(R.drawable.ic_placeholder_image)
                     .error(R.drawable.ic_placeholder_image)
                     .into(ivGambar)
             } else {
+                Log.d("GlideTest", "Gambar path: ${barang.gambarPath}")
                 ivGambar.setImageResource(R.drawable.ic_placeholder_image)
             }
 

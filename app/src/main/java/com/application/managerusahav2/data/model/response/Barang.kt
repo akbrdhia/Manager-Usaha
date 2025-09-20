@@ -1,5 +1,7 @@
 package com.application.managerusahav2.data.model.response
 
+import com.google.gson.annotations.SerializedName
+
 data class Barang(
     val id: Int,
     val nama: String,
@@ -8,5 +10,6 @@ data class Barang(
     val harga: Double,
     val modal: Double,
     val barcode: String?,
+    @SerializedName("gambar_path")
     val gambarPath: String?,
 )

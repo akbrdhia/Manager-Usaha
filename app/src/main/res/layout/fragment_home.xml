@@ -20,7 +20,7 @@
         style="@style/judul"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Manager Usaha"
+        android:text="@string/manager_usaha"
         android:layout_marginHorizontal="24dp"
         android:textColor="@color/white"
         android:layout_marginTop="94dp"
@@ -28,27 +28,28 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView2"
         android:layout_width="match_parent"
         android:layout_height="287dp"
-        android:layout_marginTop="34dp"
         android:layout_marginHorizontal="24dp"
-        app:cardElevation="8dp"
+        android:layout_marginTop="34dp"
         app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="8dp"
         app:layout_constraintTop_toBottomOf="@+id/tv_home">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bg_board"
-            android:paddingVertical="16dp"
-            android:paddingHorizontal="20dp">
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="16dp">
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Data Hari Ini"
                 android:fontFamily="@font/inter_medium"
+                android:text="Data Hari Ini"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -128,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:text="0"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -154,16 +155,16 @@
             <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:layout_height="62dp"
+                android:paddingHorizontal="65dp"
                 android:text="Laporan Keuangan"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                app:icon="@drawable/ic_barchart"
-                app:iconTint="@color/white"
-                android:paddingHorizontal="65dp"
                 app:backgroundTint="@color/dark_variant"
                 app:cornerRadius="4dp"
                 app:elevation="4dp"
+                app:icon="@drawable/ic_barchart"
+                app:iconTint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -174,6 +175,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="168dp"
@@ -181,7 +183,86 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_home">
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_dashboard_cards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/bg_board"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView2">
+
+
+
+        <!-- Card Status Sistem -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_status_sistem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/layout_status_sistem_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_board"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Status indicator with emoji and dot -->
+                <LinearLayout
+                    android:id="@+id/layout_status_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"/>
+
+                <TextView
+                    android:id="@+id/tv_title_status_sistem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Status Sistem"
+                    android:textColor="#666666"
+                    android:textSize="12sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tv_value_status_sistem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Online"
+                    android:textColor="@color/teal_700"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- Last update time -->
+                <TextView
+                    android:id="@+id/tv_update_time_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Aktif"
+                    android:textColor="#999999"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
