@@ -207,32 +207,6 @@
 
     </LinearLayout>
 
-    <!-- Tambah stok Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_add_stok"
-        android:layout_width="160dp"
-        android:layout_height="58dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:layout_marginBottom="24dp"
-        android:text="Tambah stok"
-        android:textAllCaps="false"
 
-        android:textColor="@color/text_light"
-        android:textSize="14sp"
-        app:backgroundTint="@color/primary_variant"
-        app:cornerRadius="35dp"
-
-        app:icon="@drawable/ic_plus"
-        app:iconGravity="textStart"
-        app:iconPadding="8dp"
-        app:iconTint="@color/background_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:rippleColor="@color/bnv_ripple"
-        app:shapeAppearanceOverlay="@style/RoundedButtonShape"
-
-      />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

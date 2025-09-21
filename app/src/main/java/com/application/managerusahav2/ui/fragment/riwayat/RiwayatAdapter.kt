@@ -128,19 +128,19 @@ class RiwayatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             "delete" -> {
                 tvAktivitas.text = "Dihapus"
                 ivIcon.setImageResource(R.drawable.ic_delete)
-                ivIcon.setColorFilter(ContextCompat.getColor(itemView.context, R.color.red))
+                ivIcon.setColorFilter(ContextCompat.getColor(itemView.context, R.color.secondary))
                 tvJumlah.isVisible = false
             }
-            "tambah_stok", "add" -> {
+            "tambah_stok", "plus" -> {
                 tvAktivitas.text = "Restok"
                 ivIcon.setImageResource(R.drawable.ic_trending_up)
-                ivIcon.setColorFilter(ContextCompat.getColor(itemView.context, R.color.green))
+                ivIcon.setColorFilter(ContextCompat.getColor(itemView.context, R.color.info))
                 tvJumlah.text = "+${item.jumlah} pcs"
-                tvJumlah.setTextColor(ContextCompat.getColor(itemView.context, R.color.green))
+                tvJumlah.setTextColor(ContextCompat.getColor(itemView.context, R.color.info))
                 tvJumlah.isVisible = true
             }
             "kurangi_stok", "min" -> {
-                tvAktivitas.text = "Dikurangi"
+                tvAktivitas.text = "Dibeli"
                 ivIcon.setImageResource(R.drawable.ic_trending_down)
                 ivIcon.setColorFilter(ContextCompat.getColor(itemView.context, R.color.red))
                 tvJumlah.text = "-${item.jumlah} pcs"

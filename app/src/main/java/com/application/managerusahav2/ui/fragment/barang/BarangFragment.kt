@@ -83,13 +83,57 @@ class BarangFragment : Fragment() {
 
     private fun initializeAdapter() {
         adapter = ExpandableBarangAdapter(
-            onItemClick = { barang -> /* navigate or show detail */ },
-            onEditClick = { barang -> /* edit */ },
-            onDeleteClick = { barang -> /* delete */ },
+            onItemClick = { barang ->
+                showDetailBottomSheet(barang)
+            },
+            onEditClick = { barang ->
+                // TODO: Navigate to edit fragment
+                showDetailBottomSheet(barang) // For now, show detail
+            },
+            onDeleteClick = { barang ->
+                // TODO: Show delete confirmation
+                showDetailBottomSheet(barang) // For now, show detail
+            },
             onHeaderClicked = { kategori ->
                 toggleCategory(kategori)
             }
         )
+    }
+
+    // Tambahkan method baru
+    private fun showDetailBottomSheet(barang: Barang) {
+        val bottomSheet = DetailBarangBottomSheetFragment.newInstance(barang)
+
+        // Set listener untuk update stok
+        bottomSheet.setOnStokUpdatedListener { updatedBarang, newStokValue ->
+            // Update item di list tanpa full refresh
+            updateBarangInList(updatedBarang, newStokValue)
+
+            // Optional: Refresh data from server untuk sinkronisasi
+            // viewModel.refreshData()
+        }
+
+        bottomSheet.show(parentFragmentManager, "DetailBarangBottomSheet")
+    }
+
+    private fun updateBarangInList(updatedBarang: Barang, newStokValue: Int) {
+        // Update originalBarangList
+        val updatedOriginalList = originalBarangList.map { barang ->
+            if (barang.id == updatedBarang.id) {
+                barang.copy(stok = newStokValue)
+            } else {
+                barang
+            }
+        }
+
+        originalBarangList = updatedOriginalList
+
+        // Re-apply current filters dengan data yang sudah terupdate
+        val currentSearch = searchEditText.text?.toString().orEmpty()
+        val currentKategori = kategoriSpinner.selectedItem?.toString() ?: "Semua"
+        val currentStok = stokSpinner.selectedItem?.toString() ?: "Semua"
+
+        applyFiltersOnBackground(currentSearch, currentKategori, currentStok)
     }
 
     private fun initViews(view: View) {

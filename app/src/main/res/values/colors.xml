@@ -38,6 +38,8 @@
     <color name="ripple_grey">#33000000</color> <!-- hitam 20% transparan -->
     <color name="grey_light">#F5F5F5</color>
     <color name="grey_divider">#E0E0E0</color>
+    <color name="grey_text">#757575</color>
+    <color name="chip_background">#F5F5F5</color>
 
 
     <!-- Bottom Navigation Specific -->

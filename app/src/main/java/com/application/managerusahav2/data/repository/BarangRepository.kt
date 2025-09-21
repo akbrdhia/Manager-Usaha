@@ -1,9 +1,11 @@
 package com.application.managerusahav2.data.repository
 
 import com.application.managerusahav2.data.model.request.TambahBarangRequest
+import com.application.managerusahav2.data.model.request.TambahStokRequest
 import com.application.managerusahav2.data.model.response.Barang
 import com.application.managerusahav2.data.model.response.KategoriResponse
 import com.application.managerusahav2.data.model.response.TambahBarangResponse
+import com.application.managerusahav2.data.model.response.TambahStokResponse
 import com.application.managerusahav2.data.service.ApiService
 import com.application.managerusahav2.helper.RepositoryException
 import retrofit2.Response
@@ -49,6 +51,20 @@ class BarangRepository(private val apiService: ApiService) {
         } catch (e: Exception) {
             android.util.Log.e("Repo", "Exception adding barang", e)
             throw RepositoryException("Failed to add barang: ${e.message}", e)
+        }
+    }
+
+    suspend fun UpdateStok(request: TambahStokRequest): Response<TambahStokResponse> {
+        return try {
+            val resp = apiService.updateStok(request)
+            android.util.Log.d("Repo", "Update stok response code: ${resp.code()}")
+            if (!resp.isSuccessful) {
+                android.util.Log.e("Repo", "Update stok error body: ${resp.errorBody()?.string()}")
+            }
+            resp
+        } catch (e: Exception) {
+            android.util.Log.e("Repo", "Exception updating stok", e)
+            throw RepositoryException("Failed to update stok: ${e.message}", e)
         }
     }
 }
