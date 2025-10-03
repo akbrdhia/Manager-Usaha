@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.application.managerusahav2.R
 import com.application.managerusahav2.data.model.response.Barang
 import com.application.managerusahav2.data.network.RetrofitClient
@@ -21,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
@@ -61,6 +63,11 @@ class DetailBarangBottomSheetFragment : BottomSheetDialogFragment() {
 
     private var barang: Barang? = null
     private var onStokUpdatedListener: ((Barang, Int) -> Unit)? = null
+    private var onBarangDeletedListener: ((Barang) -> Unit)? = null
+
+    fun setOnBarangDeletedListener(listener: (Barang) -> Unit) {
+        onBarangDeletedListener = listener
+    }
 
     companion object {
         private const val ARG_BARANG_ID = "arg_barang_id"
@@ -79,8 +86,8 @@ class DetailBarangBottomSheetFragment : BottomSheetDialogFragment() {
                     putString(ARG_BARANG_NAMA, barang.nama)
                     putString(ARG_BARANG_KATEGORI, barang.kategori)
                     putInt(ARG_BARANG_STOK, barang.stok)
-                    putDouble(ARG_BARANG_HARGA, barang.harga)
-                    putDouble(ARG_BARANG_MODAL, barang.modal)
+                    putLong(ARG_BARANG_HARGA, barang.harga)
+                    putLong(ARG_BARANG_MODAL, barang.modal)
                     putString(ARG_BARANG_BARCODE, barang.barcode)
                     putString(ARG_BARANG_GAMBAR, barang.gambarPath)
                 }
@@ -100,8 +107,8 @@ class DetailBarangBottomSheetFragment : BottomSheetDialogFragment() {
                 nama = args.getString(ARG_BARANG_NAMA, ""),
                 kategori = args.getString(ARG_BARANG_KATEGORI, ""),
                 stok = args.getInt(ARG_BARANG_STOK),
-                harga = args.getDouble(ARG_BARANG_HARGA),
-                modal = args.getDouble(ARG_BARANG_MODAL),
+                harga = args.getLong(ARG_BARANG_HARGA),
+                modal = args.getLong(ARG_BARANG_MODAL),
                 barcode = args.getString(ARG_BARANG_BARCODE),
                 gambarPath = args.getString(ARG_BARANG_GAMBAR)
             )
@@ -223,10 +230,23 @@ class DetailBarangBottomSheetFragment : BottomSheetDialogFragment() {
         tvKategori.text = barang.kategori
         tvStok.text = barang.stok.toString()
 
-        // Format currency
+        // Format currency - Convert to Long if needed
         val nf = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
-        tvHargaModal.text = nf.format(barang.modal)
-        tvHargaJual.text = nf.format(barang.harga)
+
+        // Handle Double to Long conversion
+        val hargaModal = when (barang.modal) {
+
+            is Long -> barang.modal
+            else -> 0L
+        }
+
+        val hargaJual = when (barang.harga) {
+            is Long -> barang.harga
+            else -> 0L
+        }
+
+        tvHargaModal.text = nf.format(hargaModal)
+        tvHargaJual.text = nf.format(hargaJual)
 
         // Stok color based on availability
         val stokColor = when {
@@ -276,28 +296,112 @@ class DetailBarangBottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
+
     private fun handleEdit() {
-        // TODO: Navigate to edit fragment atau show edit dialog
-        Toast.makeText(requireContext(), "Edit barang - Coming soon", Toast.LENGTH_SHORT).show()
+        barang?.let { barang ->
+            dismiss()
+
+            // Using bundle with serializable
+            val bundle = Bundle().apply {
+                putSerializable("arg_barang", barang)
+            }
+
+            findNavController().navigate(
+                R.id.action_barangFragment_to_editBarangFragment,
+                bundle
+            )
+        }
     }
 
     private fun handleDelete() {
-        // TODO: Show delete confirmation dialog
-        Toast.makeText(requireContext(), "Delete barang - Coming soon", Toast.LENGTH_SHORT).show()
+        // Show confirmation dialog dengan warning yang jelas
+        val barangName = barang?.nama ?: "barang ini"
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Hapus Barang")
+            .setMessage("Apakah Anda yakin ingin menghapus \"$barangName\"?\n\nData barang akan dihapus permanen dan tidak dapat dikembalikan.")
+            .setIcon(R.drawable.ic_delete)
+            .setPositiveButton("Hapus") { _, _ ->
+                // Double confirmation untuk aksi yang destructive
+                showFinalDeleteConfirmation(barangName)
+            }
+            .setNegativeButton("Batal", null)
+            .show()
+    }
+
+    private fun showFinalDeleteConfirmation(barangName: String) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Konfirmasi Terakhir")
+            .setMessage("Ini adalah konfirmasi terakhir. \"$barangName\" akan dihapus PERMANEN.\n\nLanjutkan?")
+            .setIcon(R.drawable.ic_delete)
+            .setPositiveButton("Ya, Hapus") { _, _ ->
+                barang?.let { viewModel.deleteBarang(it.id) }
+            }
+            .setNegativeButton("Batal", null)
+            .show()
     }
 
     private fun observeViewModel() {
         lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 updateLoadingState(state.isLoading)
+                updateDeleteLoadingState(state.isDeleting)
 
                 if (state.isSuccess) {
                     handleSuccess(state.successMessage, state.newStokValue)
                 }
 
+                if (state.deleteSuccess) {
+                    handleDeleteSuccess(state.deleteMessage)
+                }
+
                 state.errorMessage?.let { errorMessage ->
                     handleError(errorMessage)
                 }
+            }
+        }
+    }
+
+    private fun handleDeleteSuccess(message: String?) {
+        // Dismiss bottom sheet dan notify parent untuk remove item
+        dismiss()
+
+        // Notify parent fragment dengan callback
+        barang?.let { deletedBarang ->
+            onBarangDeletedListener?.invoke(deletedBarang)
+        }
+
+        // Show success message di parent fragment (lebih visible)
+        // Message akan di-handle di parent fragment melalui callback
+    }
+
+    private fun updateDeleteLoadingState(isDeleting: Boolean) {
+        if (isDeleting) {
+            // Disable semua buttons dan inputs saat deleting
+            btnDelete.isEnabled = false
+            btnDelete.text = "Menghapus..."
+            btnEdit.isEnabled = false
+            btnTambahStok.isEnabled = false
+            etTambahStok.isEnabled = false
+            chipAdd5.isEnabled = false
+            chipAdd10.isEnabled = false
+            chipAdd20.isEnabled = false
+            chipAdd50.isEnabled = false
+            progressBar.visibility = View.VISIBLE
+        } else {
+            // Re-enable buttons (kecuali yang sedang loading dari operasi lain)
+            val isLoadingStok = viewModel.uiState.value.isLoading
+            if (!isLoadingStok) {
+                btnDelete.isEnabled = true
+                btnDelete.text = "Hapus"
+                btnEdit.isEnabled = true
+                btnTambahStok.isEnabled = true
+                etTambahStok.isEnabled = true
+                chipAdd5.isEnabled = true
+                chipAdd10.isEnabled = true
+                chipAdd20.isEnabled = true
+                chipAdd50.isEnabled = true
+                progressBar.visibility = View.GONE
             }
         }
     }

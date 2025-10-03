@@ -18,10 +18,8 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.primary_variant)
         NetworkConfig.init(this)
 
-        // Show dialog for base URL input
-        showBaseUrlDialog()
-        val currentUrl = NetworkConfig.getCurrentBaseUrl()
-        Toast.makeText(this, "Current URL: $currentUrl", Toast.LENGTH_LONG).show()
+        setupNavigation()
+
     }
 
     private fun showBaseUrlDialog() {
@@ -72,5 +70,14 @@ class MainActivity : AppCompatActivity() {
             R.id.bottomNavigationView
         )
         bottomNav.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.homeFragment -> bottomNav.menu.findItem(R.id.homeFragment).isChecked = true
+                R.id.laporanFragment -> bottomNav.menu.findItem(R.id.laporanFragment).isChecked = true
+                R.id.barangFragment -> bottomNav.menu.findItem(R.id.barangFragment).isChecked = true
+                R.id.riwayatFragment -> bottomNav.menu.findItem(R.id.riwayatFragment).isChecked = true
+            }
+        }
     }
 }

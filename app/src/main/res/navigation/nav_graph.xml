@@ -9,7 +9,33 @@
         android:id="@+id/homeFragment"
         android:name="com.application.managerusahav2.ui.fragment.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_laporanFragment"
+            app:destination="@id/laporanFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_homeFragment_to_tentangFragment"
+            app:destination="@id/tentangFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/homeFragment"/>
+        <action
+            android:id="@+id/action_homeFragment_to_panduanFragment"
+            app:destination="@id/panduanFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/homeFragment"/>
+    </fragment>
     <fragment
         android:id="@+id/barangFragment"
         android:name="com.application.managerusahav2.ui.fragment.barang.BarangFragment"
@@ -23,6 +49,14 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/barangFragment" />
+        <action
+            android:id="@+id/action_barangFragment_to_editBarangFragment"
+            app:destination="@id/editBarangFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/barangFragment"/>
     </fragment>
     <fragment
         android:id="@+id/laporanFragment"
@@ -52,5 +86,29 @@
     <fragment
         android:id="@+id/barcodeScannerFragment"
         android:name="com.application.managerusahav2.ui.fragment.barcode_scanner.BarcodeScannerFragment"
-        android:label="Pindai Barcode" />
+        android:label="Pindai Barcode"
+        tools:layout="@layout/fragment_barcode_scanner"/>
+
+    <fragment android:id="@+id/editBarangFragment"
+        android:name="com.application.managerusahav2.ui.fragment.edit_barang.EditBarangFragment"
+        tools:layout="@layout/fragment_edit_barang">
+        <action
+            android:id="@+id/action_editBarangFragment_to_barcodeScannerFragment"
+            app:destination="@id/barcodeScannerFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+    <fragment
+        android:id="@+id/tentangFragment"
+        android:name="com.application.managerusahav2.ui.fragment.tentang.TentangFragment"
+        android:label="TentangFragment"
+        tools:layout="@layout/fragment_tentang"/>
+    <fragment
+        android:id="@+id/panduanFragment"
+        android:name="com.application.managerusahav2.ui.fragment.panduan.PanduanFragment"
+        android:label="PanduanFragment"
+        tools:layout="@layout/fragment_panduan"/>
+
 </navigation>

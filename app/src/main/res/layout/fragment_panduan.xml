@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Scroll biar teks panjang bisa digeser -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Header background biru -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:background="@drawable/gradient_bg_blue"
+                android:gravity="center"
+                android:orientation="vertical">
+                <!-- Header dengan tombol kembali -->
+                <LinearLayout
+                    android:id="@+id/header_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/btn_back"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@drawable/ic_arrow_backw" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Kembali"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <!-- Logo -->
+                <ImageView
+                    android:layout_width="297dp"
+                    android:layout_height="139dp"
+                    android:src="@drawable/logo_manager" />
+
+
+            </LinearLayout>
+
+            <!-- Konten -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Judul Tentang Aplikasi -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Panduan Aplikasi"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- Deskripsi -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:lineSpacingExtra="2dp"
+                    android:text="1. Menambahkan barang\nKe halaman barang lalu click tombol tambah barang, dihalaman barang isi semua yang yang tertera dan jika belum buat kategori click plus (+) untuk tambahkan kategori.\n
+
+\n2. Menambah Stok barang\nKe halaman beranda lalu click tombol stok masuk, pilih barang yang anda ingin tambah stoknya setelah selesai edit click tombol ok.\n
+
+\n3. Mengurangi Stok barang\nKe halaman beranda lalu click tombol stok keluar, pilih barang yang anda ingin kurangi stoknya, setelah selesai edit click tombol ok.\n
+
+\n4. Mengedit barang\nKe halaman barang lalu click barang yang anda ingin edit, setelah selesai edit click tombol ok.\n
+
+\n5. Menghapus barang\nKe halaman barang lalu click (-) yang ada di kiri barang yang anda ingin hapus, setelah itu click tombol ok.\n"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

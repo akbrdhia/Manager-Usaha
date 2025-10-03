@@ -1,12 +1,8 @@
-package com.application.managerusahav2.data.model.response
+package com.application.managerusahav2.data.model.request
 
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
-data class Barang(
-    @SerializedName("id")
-    val id: Int,
-
+data class EditBarangRequest(
     @SerializedName("nama")
     val nama: String,
 
@@ -17,14 +13,14 @@ data class Barang(
     val stok: Int,
 
     @SerializedName("harga")
-    val harga: Long,  // Changed from Double to Long
+    val harga: Long,
 
     @SerializedName("modal")
-    val modal: Long,  // Changed from Double to Long
+    val modal: Long,
 
     @SerializedName("barcode")
-    val barcode: String?,
+    val barcode: String? = null,
 
     @SerializedName("gambar_path")
-    val gambarPath: String?
-) : Serializable
+    val gambarPath: String? = null
+)

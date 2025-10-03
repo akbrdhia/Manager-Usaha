@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.AdapterView
 import android.widget.ProgressBar
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.application.managerusahav2.R
@@ -27,6 +28,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 
 class BarangFragment : Fragment() {
 
@@ -106,14 +108,53 @@ class BarangFragment : Fragment() {
 
         // Set listener untuk update stok
         bottomSheet.setOnStokUpdatedListener { updatedBarang, newStokValue ->
-            // Update item di list tanpa full refresh
             updateBarangInList(updatedBarang, newStokValue)
+        }
 
-            // Optional: Refresh data from server untuk sinkronisasi
-            // viewModel.refreshData()
+        // Set listener untuk delete barang
+        bottomSheet.setOnBarangDeletedListener { deletedBarang ->
+            handleBarangDeleted(deletedBarang)
         }
 
         bottomSheet.show(parentFragmentManager, "DetailBarangBottomSheet")
+    }
+
+
+    private fun handleBarangDeleted(deletedBarang: Barang) {
+        // Remove dari originalBarangList
+        originalBarangList = originalBarangList.filter { it.id != deletedBarang.id }
+
+        // Re-apply filters untuk update display
+        val currentSearch = searchEditText.text?.toString().orEmpty()
+        val currentKategori = kategoriSpinner.selectedItem?.toString() ?: "Semua"
+        val currentStok = stokSpinner.selectedItem?.toString() ?: "Semua"
+
+        applyFiltersOnBackground(currentSearch, currentKategori, currentStok)
+
+        // Update kategori spinner jika perlu
+        updateKategoriSpinner(originalBarangList)
+
+        // Show success message dengan Snackbar (lebih prominent daripada Toast)
+        showDeleteSuccessMessage(deletedBarang.nama)
+
+        // Optional: Refresh data dari server untuk sinkronisasi
+        // viewModel.refreshData()
+    }
+
+    private fun showDeleteSuccessMessage(namaBarang: String) {
+        val snackbar = Snackbar.make(
+            requireView(),
+            "\"$namaBarang\" berhasil dihapus",
+            Snackbar.LENGTH_LONG
+        )
+
+        // Optional: Add undo action jika diperlukan
+        snackbar.setAction("OK") {
+            snackbar.dismiss()
+        }
+
+        snackbar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.primary))
+        snackbar.show()
     }
 
     private fun updateBarangInList(updatedBarang: Barang, newStokValue: Int) {
@@ -288,19 +329,7 @@ class BarangFragment : Fragment() {
         }
     }
 
-    private fun setupDummyData() {
-        originalBarangList = listOf(
-            Barang(1, "Teh Pucuk", "Minuman", 5, 2000.0, 1500.0, "123456789", null),
-            Barang(2, "Aqua", "Minuman", 2, 2000.0, 1800.0, "987654321", null),
-            Barang(3, "Le Minerale", "Minuman", 2, 2000.0, 1700.0, "456789123", null),
-            Barang(4, "Teh Gelas", "Minuman", 2, 2000.0, 1600.0, "789123456", null),
-            Barang(5, "Nasi Gudeg", "Makanan", 10, 15000.0, 12000.0, "321654987", null),
-            Barang(6, "Ayam Geprek", "Makanan", 8, 18000.0, 15000.0, "654987321", null)
-        )
 
-        updateKategoriSpinner(originalBarangList)
-        onDataLoadedFromApi(originalBarangList)
-    }
 
     private fun updateKategoriSpinner(barangList: List<Barang>) {
         val categories = mutableListOf("Semua")

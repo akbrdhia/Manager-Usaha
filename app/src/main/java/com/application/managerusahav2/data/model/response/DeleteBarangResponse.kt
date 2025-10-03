@@ -1,4 +1,11 @@
 package com.application.managerusahav2.data.model.response
 
-class DeleteBarangResponse {
-}
+import com.google.gson.annotations.SerializedName
+
+data class DeleteBarangResponse(
+    @SerializedName("success")
+    val success: Boolean,
+
+    @SerializedName("message")
+    val message: String
+)
