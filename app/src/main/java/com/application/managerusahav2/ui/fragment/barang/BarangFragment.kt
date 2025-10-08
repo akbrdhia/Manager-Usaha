@@ -64,8 +64,8 @@ class BarangFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         StatusBarHelper.setStatusBar(requireActivity(), isLight = true)
-
-        // init views & adapter
+        
+        //* init views & adapter
         initViews(view)
         initializeAdapter()
         setupRecyclerView()
